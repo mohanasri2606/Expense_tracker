@@ -265,4 +265,4 @@ def flash_with_timestamp(message, category="info"):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))  # Use PORT if set, otherwise default to 5000
-    app.run(host='0.0.0.0', port=port, debug=False)  # Bind to 0.0.0.0 and disable debug mode
+    app.run(host='0.0.0.0', port=port, debug=False)
