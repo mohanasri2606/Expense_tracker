@@ -1,22 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
-import bcrypt
+import bcrypt,os
 from mysql.connector import Error
 from functools import wraps
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Replace with a secure key
+app.secret_key = os.environ.get('SECRET_KEY', '7389343c37dc054823ec06b9b2c1cf68db9536d5c1eff8715112d59a67159cb0')  
 
 # Database connection function
 def get_db_connection():
     try:
         connection = mysql.connector.connect(
-            host='maglev.proxy.rlwy.net',  # Railway host
-            user='root',  # Your username
-            port='34359',  # Railway port
-            password='eckMkwQdwlMZokwJxNjcNFYmOIUYYhhJ',  # Your password
-            database='railway'  # Your database name on Railway
+            host=os.environ.get('DB_HOST', 'maglev.proxy.rlwy.net'),  
+            user=os.environ.get('DB_USER', 'root'),  
+            port=os.environ.get('DB_PORT', '34359'),  
+            password=os.environ.get('DB_PASSWORD', 'eckMkwQdwlMZokwJxNjcNFYmOIUYYhhJ'), 
+            database=os.environ.get('DB_NAME', 'railway')  
         )
         return connection
     except Error as e:
@@ -264,4 +264,5 @@ def flash_with_timestamp(message, category="info"):
     flash((message, timestamp), category)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
